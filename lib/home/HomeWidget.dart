@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trainer/home/model/Device.dart';
+import 'package:trainer/home/Device.dart';
+import 'package:trainer/zone/ZoneWidget.dart';
 
-import '../../common/Styles.dart';
+import '../common/Styles.dart';
 
 class HomeWidget extends StatefulWidget {
-  HomeWidget({Key key, this.title}) : super(key: key);
-  final String title;
+  HomeWidget({Key key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -38,13 +38,18 @@ class _HomeState extends State<HomeWidget> {
 
   void _onClickSelectButton() {}
 
-  void _onClickZonesButton() {}
+  void _onClickZonesButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ZoneWidget()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Trainer"),
       ),
       body: Center(
         child: Column(
@@ -75,7 +80,7 @@ class _HomeState extends State<HomeWidget> {
                     Text(device.name, style: TextStyle(fontSize: 20.0)),
                     Spacer(),
                     Text(device.getStateText(),
-                        style: TextStyle(fontSize: 20.0)),
+                        style: TextStyle(fontSize: 15.0)),
                     Spacer(),
                   ],
                 ),
