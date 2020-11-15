@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'home/home_widget.dart';
 
 class TrainerApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  static buildMaterialApp(Widget widget) {
     return MaterialApp(
       title: 'Trainer',
       theme: ThemeData(
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeWidget(),
+      home: widget,
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return buildMaterialApp(HomeWidget());
   }
 }

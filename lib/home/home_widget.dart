@@ -53,9 +53,21 @@ class _HomeState extends State<HomeWidget> {
   Column HomeButtons() {
     return Column(
       children: <Widget>[
-        flatDefault("Discover", _onClickDiscoverButton),
-        flatDefault("Select Training Plan", _onClickSelectButton),
-        flatDefault("Zones", _onClickZonesButton),
+        buttonFlatDefault(
+          Key("btn_discover"),
+          "Discover",
+          _onClickDiscoverButton,
+        ),
+        buttonFlatDefault(
+          Key("btn_select"),
+          "Select Training Plan",
+          _onClickSelectButton,
+        ),
+        buttonFlatDefault(
+          Key("btn_zones"),
+          "Zones",
+          _onClickZonesButton,
+        ),
       ],
     );
   }
