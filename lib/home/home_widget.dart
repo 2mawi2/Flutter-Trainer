@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trainer/common/preferences_repo.dart';
 import 'package:trainer/home/device.dart';
 import 'package:trainer/zone/zone_widget.dart';
 
@@ -25,7 +26,9 @@ class _HomeState extends State<HomeWidget> {
   void _onClickZonesButton() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ZoneWidget()),
+      MaterialPageRoute(builder: (context) => ZoneWidget(
+        preferencesRepo: PreferencesRepo(),
+      )),
     );
   }
 
