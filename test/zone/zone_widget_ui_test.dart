@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:trainer/common/preferences_repo.dart';
+import 'package:trainer/data/local/preferences_repo.dart';
 import 'package:trainer/zone/zone_widget.dart';
 
 import '../test_mocks.dart';

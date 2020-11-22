@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trainer/common/preferences_repo.dart';
+import 'package:trainer/data/local/preferences_repo.dart';
+import 'package:trainer/data/native/SensorChannel.dart';
 import 'package:trainer/home/device.dart';
 import 'package:trainer/zone/zone_widget.dart';
 
 import '../common/styles.dart';
 
 class HomeWidget extends StatefulWidget {
-  HomeWidget({Key key}) : super(key: key);
+  HomeWidget({Key key}) : super(key: key) {}
 
   @override
   _HomeState createState() => _HomeState();
@@ -19,16 +20,20 @@ class _HomeState extends State<HomeWidget> {
     Device(name: "Second Device", state: DeviceState.disconnected),
   ];
 
-  void _onClickDiscoverButton() {}
+  Future _onClickDiscoverButton() async {
+    var sensorChannel = SensorChannel();
+    await sensorChannel.startService();
+  }
 
   void _onClickSelectButton() {}
 
   void _onClickZonesButton() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ZoneWidget(
-        preferencesRepo: PreferencesRepo(),
-      )),
+      MaterialPageRoute(
+          builder: (context) => ZoneWidget(
+                preferencesRepo: PreferencesRepo(),
+              )),
     );
   }
 
@@ -88,8 +93,7 @@ class _HomeState extends State<HomeWidget> {
                         Spacer(),
                         Text(device.name, style: TextStyle(fontSize: 20.0)),
                         Spacer(),
-                        Text(getTextByState(device.state),
-                            style: TextStyle(fontSize: 15.0)),
+                        Text(getTextByState(device.state), style: TextStyle(fontSize: 15.0)),
                         Spacer(),
                       ],
                     ),
