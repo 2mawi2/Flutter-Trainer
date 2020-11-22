@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.os.PersistableBundle
+import com.google.gson.Gson
 import com.mawistudios.trainer.trainer.app.log
 import com.mawistudios.trainer.trainer.app.toast
 import com.mawistudios.trainer.trainer.data.ITrainingSessionObserver
@@ -19,7 +20,8 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
-    private val channel = "com.mawistudios.trainer/sensor"
+    private val channelName = "com.mawistudios.trainer/sensor"
+    private lateinit var channel: MethodChannel
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
@@ -32,12 +34,14 @@ class MainActivity : FlutterActivity() {
 
     private fun setupChannelCallHandler(flutterEngine: FlutterEngine) {
         val binaryMessenger = flutterEngine.dartExecutor.binaryMessenger
-        MethodChannel(binaryMessenger, channel).setMethodCallHandler { call, result ->
+        channel = MethodChannel(binaryMessenger, channelName)
+        channel.setMethodCallHandler { call, result ->
             onMethodCall(call, result)
         }
     }
 
     private lateinit var sensorService: SensorService
+
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             log("Service connected")
@@ -93,7 +97,8 @@ class MainActivity : FlutterActivity() {
 
         override fun onSensorConnectionStateChanged(sensor: Sensor) {
             toast("sensor status changed: ${sensor.name}")
-            // notify flutter that sensor state changed
+            channel.invokeMethod("onSensorConnectionStateChanged", Gson().toJson(sensor))
+
         }
 
     }

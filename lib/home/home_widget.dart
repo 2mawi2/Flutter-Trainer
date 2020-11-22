@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trainer/common/model/Sensor.dart';
 import 'package:trainer/data/local/preferences_repo.dart';
 import 'package:trainer/data/native/SensorChannel.dart';
 import 'package:trainer/home/device.dart';
@@ -22,6 +23,9 @@ class _HomeState extends State<HomeWidget> {
 
   Future _onClickDiscoverButton() async {
     var sensorChannel = SensorChannel();
+    sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
+      print("received sensor status change event with status: ${sensor.state}");
+    };
     await sensorChannel.startService();
   }
 
