@@ -1,12 +1,14 @@
 package com.mawistudios.trainer.trainer.model
 
 import com.wahoofitness.connector.conn.connections.params.ConnectionParams
+import com.wahoofitness.connector.conn.connections.params.ProductType
 
 data class Sensor(
         var id: Long = 0,
         var state: String? = null,
         var name: String = "",
-        var params: String? = null
+        var params: String? = null,
+        val type: String? = null
 ) {
     fun setParameters(connectionParams: ConnectionParams) {
         params = connectionParams.serialize()

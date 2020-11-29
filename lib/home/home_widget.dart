@@ -16,17 +16,29 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeWidget> {
-  var devices = [
-    Device(name: "First Device", state: DeviceState.connected),
-    Device(name: "Second Device", state: DeviceState.disconnected),
-  ];
+  var sensors = <Sensor>[];
+  var isDiscoveryStarted = false;
 
   Future _onClickDiscoverButton() async {
-    var sensorChannel = SensorChannel();
-    sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
-      print("received sensor status change event with status: ${sensor.state}");
-    };
-    await sensorChannel.startService();
+    if (!isDiscoveryStarted) {
+      var sensorChannel = SensorChannel();
+      sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
+        print("received sensor status change event with status: ${sensor.state}");
+        updateOrAddSensor(sensors, sensor);
+        setState(() {});
+      };
+      await sensorChannel.startService();
+    }
+  }
+
+  void updateOrAddSensor(List<Sensor> sensors, Sensor sensor) {
+    var sensorExists = sensors.any((it) => it.name == sensor.name);
+    if (sensorExists) {
+      var indexToUpdate = sensors.indexWhere((it) => it.name == sensor.name);
+      sensors[indexToUpdate] = sensor;
+    } else {
+      sensors.add(sensor);
+    }
   }
 
   void _onClickSelectButton() {}
@@ -54,7 +66,7 @@ class _HomeState extends State<HomeWidget> {
             Spacer(),
             HomeButtons(),
             Spacer(),
-            Devices(),
+            Sensors(),
             Spacer(),
           ],
         ),
@@ -84,9 +96,9 @@ class _HomeState extends State<HomeWidget> {
     );
   }
 
-  Column Devices() {
+  Column Sensors() {
     return Column(
-        children: devices
+        children: sensors
             .map((device) => Padding(
                   padding: EdgeInsets.only(top: 20.0, left: 60.0, right: 60.0),
                   child: ColoredBox(
@@ -95,9 +107,9 @@ class _HomeState extends State<HomeWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Spacer(),
-                        Text(device.name, style: TextStyle(fontSize: 20.0)),
+                        Text(device.type, style: TextStyle(fontSize: 20.0)),
                         Spacer(),
-                        Text(getTextByState(device.state), style: TextStyle(fontSize: 15.0)),
+                        Text(device.state, style: TextStyle(fontSize: 10.0)),
                         Spacer(),
                       ],
                     ),
@@ -107,20 +119,13 @@ class _HomeState extends State<HomeWidget> {
   }
 
   final stateColorMap = {
-    DeviceState.connected: Colors.green.withAlpha(70),
-    DeviceState.disconnected: Colors.red.withAlpha(70),
+    "CONNECTED": Colors.green.withAlpha(70),
+    "DISCONNECTED": Colors.red.withAlpha(70),
+    "CONNECTING": Colors.yellow.withAlpha(70),
+    "DISCONNECTING": Colors.orange.withAlpha(70),
   };
 
-  Color getColorByState(DeviceState state) {
+  Color getColorByState(String state) {
     return stateColorMap[state] ?? Colors.red.withAlpha(70);
-  }
-
-  final stateTextMap = {
-    DeviceState.connected: "Connected",
-    DeviceState.disconnected: 'Disconnected'
-  };
-
-  String getTextByState(DeviceState state) {
-    return stateTextMap[state] ?? "Unknown";
   }
 }

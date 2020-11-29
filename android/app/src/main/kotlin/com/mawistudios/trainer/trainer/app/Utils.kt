@@ -53,15 +53,8 @@ inline fun <T> Iterable<T>.sumByLong(selector: (T) -> Long): Long {
     return sum
 }
 
-fun HardwareConnectorEnums.SensorConnectionState.asString(): String = when (this) {
-    HardwareConnectorEnums.SensorConnectionState.DISCONNECTED -> "DISCONNECTED"
-    HardwareConnectorEnums.SensorConnectionState.CONNECTING -> "CONNECTING"
-    HardwareConnectorEnums.SensorConnectionState.CONNECTED -> "CONNECTED"
-    HardwareConnectorEnums.SensorConnectionState.DISCONNECTING -> "DISCONNECTING"
-}
-
 fun Sensor.resetState(): Sensor {
-    state = HardwareConnectorEnums.SensorConnectionState.DISCONNECTED.asString()
+    state = HardwareConnectorEnums.SensorConnectionState.DISCONNECTED.name
     return this
 }
 

@@ -1,6 +1,5 @@
 package com.mawistudios.trainer.trainer.data.sensors
 
-import com.mawistudios.trainer.trainer.app.asString
 import com.mawistudios.trainer.trainer.app.log
 import com.mawistudios.trainer.trainer.data.TrainingSessionObservable
 import com.mawistudios.trainer.trainer.model.Sensor
@@ -32,12 +31,14 @@ class SensorManager : ISensorManager {
             connection: SensorConnection,
             state: SensorConnectionState
     ) {
-        log("sensor connection state changed: ${connection.connectionParams.name} $state")
+        log("sensor connection state changed: ${connection.connectionParams.name} $state connection: ${connection.toString()} "
+        )
 
         TrainingSessionObservable.onSensorConnectionStateChanged(
                 Sensor(
-                        state = state.asString(),
+                        state = state.name,
                         name = connection.deviceName,
+                        type = connection.productType.name,
                         params = connection.connectionParams.serialize()
                 )
         )
