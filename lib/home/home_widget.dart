@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:trainer/common/model/Sensor.dart';
 import 'package:trainer/data/local/preferences_repo.dart';
 import 'package:trainer/data/native/SensorChannel.dart';
-import 'package:trainer/home/device.dart';
+import 'package:trainer/workout/workout_widget.dart';
 import 'package:trainer/zone/zone_widget.dart';
 
 import '../common/styles.dart';
@@ -41,15 +41,14 @@ class _HomeState extends State<HomeWidget> {
     }
   }
 
-  void _onClickSelectButton() {}
+  void _onClickSelectButton() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => WorkoutWidget()));
+  }
 
   void _onClickZonesButton() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => ZoneWidget(
-                preferencesRepo: PreferencesRepo(),
-              )),
+      MaterialPageRoute(builder: (_) => ZoneWidget(preferencesRepo: PreferencesRepo())),
     );
   }
 

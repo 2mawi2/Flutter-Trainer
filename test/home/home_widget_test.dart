@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:trainer/common/model/Sensor.dart';
 import 'package:trainer/home/home_widget.dart';
-import 'package:trainer/zone/zone_helper.dart';
 
 void main() {
   test("updateOrAddSensors should add sensor when it did not exist", () {
