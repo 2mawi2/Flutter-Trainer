@@ -31,8 +31,8 @@ class SensorManager : ISensorManager {
             connection: SensorConnection,
             state: SensorConnectionState
     ) {
-        log("sensor connection state changed: ${connection.connectionParams.name} $state connection: ${connection.toString()} "
-        )
+        log("sensor connection state changed: ${connection.connectionParams.name}" +
+                " $state connection: $connection " )
 
         TrainingSessionObservable.onSensorConnectionStateChanged(
                 Sensor(

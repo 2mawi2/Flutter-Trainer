@@ -2,7 +2,7 @@ package com.mawistudios.trainer.trainer.app
 
 import android.util.Log
 
-fun log(message: String) = Log.i("Trainer", message)
+fun log(message: String) = Log.i("Trainer:Native", message)
 
 interface ILogger {
     fun log(message: String)

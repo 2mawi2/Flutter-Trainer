@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:trainer/common/model/Sensor.dart';
+import 'package:trainer/common/model/SensorData.dart';
 
 
 class SensorChannel {
@@ -18,6 +19,13 @@ class SensorChannel {
         onSensorConnectionStateChangedHandler(sensor);
       }
     });
+
+    channel.setMethodCallHandler((call) async {
+      if (call.method == "onNewSensorData" && onNewSensorDataHandler != null) {
+        var sensorData = SensorData.fromJson(jsonDecode(call.arguments));
+        onNewSensorDataHandler(sensorData);
+      }
+    });
   }
 
   Future<void> startService() async {
@@ -26,4 +34,5 @@ class SensorChannel {
   }
 
   Function(Sensor sensor) onSensorConnectionStateChangedHandler;
+  Function(SensorData sensor) onNewSensorDataHandler;
 }

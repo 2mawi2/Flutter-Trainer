@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trainer/common/model/SensorData.dart';
+import 'package:trainer/data/native/SensorChannel.dart';
 import 'package:trainer/workout/charts/GaugeChart.dart';
 import 'package:trainer/workout/charts/SparkBar.dart';
-
 
 class WorkoutWidget extends StatefulWidget {
   WorkoutWidget({Key key}) : super(key: key);
@@ -14,8 +15,20 @@ class WorkoutWidget extends StatefulWidget {
 class _WorkoutState extends State<WorkoutWidget> {
   _WorkoutState();
 
+  var hearthRateData = <SensorData>[];
+
   @override
   Widget build(BuildContext context) {
+    var sensorChannel = SensorChannel();
+    sensorChannel.onNewSensorDataHandler = (SensorData sensorData) {
+      switch (sensorData.dataPointType) {
+        case "HEARTHRATE_BPM":
+          hearthRateData.add(sensorData);
+          break;
+      }
+      setState(() {});
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Workout"),
@@ -52,10 +65,10 @@ class _WorkoutState extends State<WorkoutWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("84     ",
+                  Text("80         ", //hearthRateData.last.dataPoint,
                       style: TextStyle(
                           fontSize: 40.0, fontWeight: FontWeight.bold)),
-                  Text("140",
+                  Text(getLastHearthRate(),
                       style: TextStyle(
                           fontSize: 40.0, fontWeight: FontWeight.bold)),
                 ],
@@ -65,5 +78,9 @@ class _WorkoutState extends State<WorkoutWidget> {
         )
       ],
     );
+  }
+
+  String getLastHearthRate() {
+    return hearthRateData.isNotEmpty ? hearthRateData.last.dataPoint : "--";
   }
 }

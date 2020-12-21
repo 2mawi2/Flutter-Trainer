@@ -21,7 +21,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
-    private val channelName = "com.mawistudios.trainer/sensor"
     private lateinit var channel: MethodChannel
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
@@ -35,7 +34,7 @@ class MainActivity : FlutterActivity() {
 
     private fun setupChannelCallHandler(flutterEngine: FlutterEngine) {
         val binaryMessenger = flutterEngine.dartExecutor.binaryMessenger
-        channel = MethodChannel(binaryMessenger, channelName)
+        channel = MethodChannel(binaryMessenger, "com.mawistudios.trainer/sensor")
         channel.setMethodCallHandler { call, result ->
             onMethodCall(call, result)
         }
@@ -103,7 +102,6 @@ class MainActivity : FlutterActivity() {
             toast("sensor status changed: ${sensor.name}")
             channel.invokeMethod("onSensorConnectionStateChanged", Gson().toJson(sensor))
         }
-
     }
 }
 
