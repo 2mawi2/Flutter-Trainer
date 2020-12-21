@@ -1,7 +1,7 @@
 package com.mawistudios.trainer.trainer.data.sensors
 
 import com.mawistudios.trainer.trainer.app.log
-import com.mawistudios.trainer.trainer.data.TrainingSessionObservable
+import com.mawistudios.trainer.trainer.data.observer.TrainingSessionObservable
 import com.mawistudios.trainer.trainer.model.Sensor
 import com.wahoofitness.connector.HardwareConnectorEnums.SensorConnectionError
 import com.wahoofitness.connector.HardwareConnectorEnums.SensorConnectionState
@@ -56,13 +56,13 @@ class SensorManager : ISensorManager {
             type: CapabilityType
     ) {
         log("detected sensor: ${type.name}")
-        //when (type) {
-        //    CapabilityType.Heartrate -> HearthRateSensorStrategy(sensorDataRepo)
-        //    CapabilityType.WheelRevs -> WheelRevsSensorStrategy(sensorDataRepo)
-        //    CapabilityType.CrankRevs -> CrankRevsSensorStrategy(sensorDataRepo)
-        //    CapabilityType.BikePower -> BikePowerStrategy(sensorDataRepo)
-        //    else -> UnknownSensorStrategy()
-        //}.handleData(connection)
+        when (type) {
+            CapabilityType.Heartrate -> HearthRateSensorStrategy()
+            else -> UnknownSensorStrategy()
+            // CapabilityType.WheelRevs -> WheelRevsSensorStrategy(sensorDataRepo)
+            // CapabilityType.CrankRevs -> CrankRevsSensorStrategy(sensorDataRepo)
+            // CapabilityType.BikePower -> BikePowerStrategy(sensorDataRepo)
+        }.handleData(connection)
     }
 }
 

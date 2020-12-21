@@ -10,10 +10,11 @@ import android.os.PersistableBundle
 import com.google.gson.Gson
 import com.mawistudios.trainer.trainer.app.log
 import com.mawistudios.trainer.trainer.app.toast
-import com.mawistudios.trainer.trainer.data.ITrainingSessionObserver
+import com.mawistudios.trainer.trainer.data.observer.ITrainingSessionObserver
 import com.mawistudios.trainer.trainer.data.SensorService
-import com.mawistudios.trainer.trainer.data.TrainingSessionObservable
+import com.mawistudios.trainer.trainer.data.observer.TrainingSessionObservable
 import com.mawistudios.trainer.trainer.model.Sensor
+import com.mawistudios.trainer.trainer.model.SensorData
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
@@ -89,7 +90,10 @@ class MainActivity : FlutterActivity() {
     }
 
     private val trainingSessionObserver = object : ITrainingSessionObserver {
-        override fun onTrainingDataChanged() {}
+        override fun onNewSensorData(sensorData: SensorData) {
+            toast("new sensor data: $sensorData ")
+            channel.invokeMethod("onNewSensorData", Gson().toJson(sensorData))
+        }
 
         override fun onDiscoveryStarted() {
             toast("discovery started")
@@ -98,7 +102,6 @@ class MainActivity : FlutterActivity() {
         override fun onSensorConnectionStateChanged(sensor: Sensor) {
             toast("sensor status changed: ${sensor.name}")
             channel.invokeMethod("onSensorConnectionStateChanged", Gson().toJson(sensor))
-
         }
 
     }

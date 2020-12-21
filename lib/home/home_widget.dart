@@ -23,7 +23,6 @@ class _HomeState extends State<HomeWidget> {
     if (!isDiscoveryStarted) {
       var sensorChannel = SensorChannel();
       sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
-        print("received sensor status change event with status: ${sensor.state}");
         updateOrAddSensor(sensors, sensor);
         setState(() {});
       };

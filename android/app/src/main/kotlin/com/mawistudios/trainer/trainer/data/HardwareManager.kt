@@ -3,6 +3,7 @@ package com.mawistudios.trainer.trainer.data
 import android.content.Context
 import com.mawistudios.trainer.trainer.data.sensors.ISensorManager
 import com.mawistudios.trainer.trainer.app.log
+import com.mawistudios.trainer.trainer.data.observer.TrainingSessionObservable
 import com.mawistudios.trainer.trainer.model.Sensor
 import com.wahoofitness.connector.HardwareConnector
 import com.wahoofitness.connector.HardwareConnectorEnums

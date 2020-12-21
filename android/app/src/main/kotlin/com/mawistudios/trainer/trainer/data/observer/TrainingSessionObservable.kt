@@ -1,7 +1,7 @@
-package com.mawistudios.trainer.trainer.data
+package com.mawistudios.trainer.trainer.data.observer
 
 import com.mawistudios.trainer.trainer.model.Sensor
-
+import com.mawistudios.trainer.trainer.model.SensorData
 
 object TrainingSessionObservable {
     private var observers = mutableListOf<ITrainingSessionObserver>()
@@ -14,12 +14,12 @@ object TrainingSessionObservable {
         observers.removeIf { it == trainingSessionObserver }
     }
 
-    fun onTrainingDataChanged() = observers.forEach { it.onTrainingDataChanged() }
+    fun onNewSensorData(sensorData: SensorData) = observers.forEach { it.onNewSensorData(sensorData) }
 
     fun onDiscoveryStarted() = observers.forEach { it.onDiscoveryStarted() }
 
     fun onSensorConnectionStateChanged(
-        sensor: Sensor
+            sensor: Sensor
     ) {
         observers.forEach { it.onSensorConnectionStateChanged(sensor) }
     }
