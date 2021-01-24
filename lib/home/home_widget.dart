@@ -18,10 +18,10 @@ class HomeWidget extends StatefulWidget {
 class _HomeState extends State<HomeWidget> {
   var sensors = <Sensor>[];
   var isDiscoveryStarted = false;
+  var sensorChannel = SensorChannel();
 
   Future _onClickDiscoverButton() async {
     if (!isDiscoveryStarted) {
-      var sensorChannel = SensorChannel();
       sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
         updateOrAddSensor(sensors, sensor);
         setState(() {});
@@ -47,7 +47,8 @@ class _HomeState extends State<HomeWidget> {
   void _onClickZonesButton() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ZoneWidget(preferencesRepo: PreferencesRepo())),
+      MaterialPageRoute(
+          builder: (_) => ZoneWidget(preferencesRepo: PreferencesRepo())),
     );
   }
 

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:trainer/common/model/Sensor.dart';
 import 'package:trainer/common/model/SensorData.dart';
 
-
 class SensorChannel {
   static const channel = const MethodChannel("com.mawistudios.trainer/sensor");
 
@@ -14,13 +13,11 @@ class SensorChannel {
 
   void _setMethodCallHandlers() {
     channel.setMethodCallHandler((call) async {
-      if (call.method == "onSensorConnectionStateChanged" && onSensorConnectionStateChangedHandler != null) {
+      if (call.method == "onSensorConnectionStateChanged" &&
+          onSensorConnectionStateChangedHandler != null) {
         var sensor = Sensor.fromJson(jsonDecode(call.arguments));
         onSensorConnectionStateChangedHandler(sensor);
       }
-    });
-
-    channel.setMethodCallHandler((call) async {
       if (call.method == "onNewSensorData" && onNewSensorDataHandler != null) {
         var sensorData = SensorData.fromJson(jsonDecode(call.arguments));
         onNewSensorDataHandler(sensorData);
