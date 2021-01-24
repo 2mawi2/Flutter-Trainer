@@ -1,13 +1,14 @@
 package com.mawistudios.trainer.trainer.data
 
 import android.content.Context
-import com.mawistudios.trainer.trainer.data.sensors.ISensorManager
 import com.mawistudios.trainer.trainer.app.log
 import com.mawistudios.trainer.trainer.data.observer.TrainingSessionObservable
+import com.mawistudios.trainer.trainer.data.sensors.ISensorManager
 import com.mawistudios.trainer.trainer.model.Sensor
 import com.wahoofitness.connector.HardwareConnector
 import com.wahoofitness.connector.HardwareConnectorEnums
 import com.wahoofitness.connector.HardwareConnectorTypes
+import com.wahoofitness.connector.HardwareConnectorTypes.NetworkType
 import com.wahoofitness.connector.conn.connections.SensorConnection
 
 interface IHardwareManager {
@@ -78,7 +79,7 @@ class HardwareManager constructor(
     }
 
     private fun startDiscovering() {
-        connector.startDiscovery(discoveryListener)
+        connector.startDiscovery(discoveryListener, NetworkType.BTLE)
         TrainingSessionObservable.onDiscoveryStarted()
     }
 
