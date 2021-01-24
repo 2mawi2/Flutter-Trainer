@@ -36,6 +36,7 @@ class SensorManager : ISensorManager {
 
         TrainingSessionObservable.onSensorConnectionStateChanged(
                 Sensor(
+                        id = connection.id,
                         state = state.name,
                         name = connection.deviceName,
                         type = connection.productType.name,

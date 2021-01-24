@@ -21,6 +21,7 @@ class HearthRateSensorStrategy(
             override fun onHeartrateData(data: Heartrate.Data) {
                 log(data.toString())
                 val sensorData = SensorData(
+                        sensorId = connection.id,
                         dataPoint = data.heartrate.asEventsPerMinute(),
                         time = Date(data.timeMs),
                         dataPointType = DataPointType.HEARTHRATE_BPM

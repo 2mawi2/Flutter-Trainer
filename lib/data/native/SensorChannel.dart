@@ -11,6 +11,7 @@ class SensorChannel {
     _setMethodCallHandlers();
   }
 
+
   void _setMethodCallHandlers() {
     channel.setMethodCallHandler((call) async {
       if (call.method == "onSensorConnectionStateChanged" &&

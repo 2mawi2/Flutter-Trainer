@@ -1,5 +1,5 @@
 class Sensor {
-  final int id;
+  final String id;
   final String state;
   final String name;
   final String params;
