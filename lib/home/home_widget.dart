@@ -62,42 +62,30 @@ class _HomeState extends State<HomeWidget> {
     Navigator.push(context, MaterialPageRoute(builder: (_) => WorkoutWidget()));
   }
 
-  void _onClickZonesButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => ZoneWidget(preferencesRepo: PreferencesRepo())),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Trainer"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            HomeButtons(),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buttonFlatDefault(
-                  Key("btn_discover"),
-                  "Discover",
-                  _onClickDiscoverButton,
-                ),
-                SizedBox(width: 20),
-                discoverProgressIndicator()
-              ],
-            ),
-            Sensors(),
-            Spacer(),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Spacer(),
+          HomeButtons(),
+          Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              buttonFlatDefault(
+                Key("btn_discover"),
+                "Discover",
+                _onClickDiscoverButton,
+              ),
+              SizedBox(width: 20),
+              discoverProgressIndicator()
+            ],
+          ),
+          Sensors(),
+          Spacer(),
+        ],
       ),
     );
   }
@@ -123,11 +111,6 @@ class _HomeState extends State<HomeWidget> {
           Key("btn_select"),
           "Select Training Plan",
           _onClickSelectButton,
-        ),
-        buttonFlatDefault(
-          Key("btn_zones"),
-          "Zones",
-          _onClickZonesButton,
         ),
       ],
     );

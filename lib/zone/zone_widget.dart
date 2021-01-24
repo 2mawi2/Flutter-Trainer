@@ -19,21 +19,16 @@ class _ZoneState extends State<ZoneWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Zones"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            ftpForm(),
-            Spacer(),
-            zones(),
-            Spacer(),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Spacer(),
+          ftpForm(),
+          Spacer(),
+          zones(),
+          Spacer(),
+        ],
       ),
     );
   }
