@@ -62,6 +62,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation project(path: ':wahoo_fitness_android_api_1.8.2.0')
     implementation "com.google.code.gson:gson:2.8.6"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
 
     testImplementation "org.koin:koin-test:2.1.5"
 }

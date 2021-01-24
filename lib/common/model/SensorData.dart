@@ -25,18 +25,20 @@ class SensorData {
         'dataPoint': dataPoint
       };
 
-  String getDataPrefix() {
+  String getUnit() {
     switch (this.dataPointType) {
       case "HEARTHRATE_BPM":
-        return "BPM";
+        return "bpm";
+      case "CRANKREVS_CADENCE":
+        return "rpm";
       default:
         return "";
     }
   }
 
   String getDefaultLabel() {
-    var prefix = this.getDataPrefix();
+    var unit = this.getUnit();
     var truncatedDataPoint = this.dataPoint.truncate().toString();
-    return "$prefix $truncatedDataPoint";
+    return "$truncatedDataPoint $unit";
   }
 }

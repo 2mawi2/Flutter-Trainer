@@ -25,6 +25,10 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : FlutterActivity() {
     private lateinit var channel: MethodChannel
@@ -126,8 +130,9 @@ class MainActivity : FlutterActivity() {
 
     private val trainingSessionObserver = object : ITrainingSessionObserver {
         override fun onNewSensorData(sensorData: SensorData) {
-            toast("new sensor data: $sensorData ")
-            channel.invokeMethod("onNewSensorData", Gson().toJson(sensorData))
+            GlobalScope.launch(Dispatchers.Main) {
+                channel.invokeMethod("onNewSensorData", Gson().toJson(sensorData))
+            }
         }
 
         override fun onDiscoveryStarted() {
@@ -135,8 +140,9 @@ class MainActivity : FlutterActivity() {
         }
 
         override fun onSensorConnectionStateChanged(sensor: Sensor) {
-            toast("sensor status changed: ${sensor.name}")
-            channel.invokeMethod("onSensorConnectionStateChanged", Gson().toJson(sensor))
+            GlobalScope.launch(Dispatchers.Main) {
+                channel.invokeMethod("onSensorConnectionStateChanged", Gson().toJson(sensor))
+            }
         }
     }
 }

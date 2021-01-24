@@ -6,6 +6,7 @@ import 'package:trainer/common/model/Sensor.dart';
 import 'package:trainer/common/model/SensorData.dart';
 import 'package:trainer/data/local/preferences_repo.dart';
 import 'package:trainer/data/native/SensorChannel.dart';
+import 'package:trainer/home/sensor_widget.dart';
 import 'package:trainer/workout/workout_widget.dart';
 import 'package:trainer/zone/zone_widget.dart';
 
@@ -63,8 +64,7 @@ class _HomeState extends State<HomeWidget> {
   void _onClickZonesButton() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (_) => ZoneWidget(preferencesRepo: PreferencesRepo())),
+      MaterialPageRoute(builder: (_) => ZoneWidget(preferencesRepo: PreferencesRepo())),
     );
   }
 
@@ -112,8 +112,7 @@ class _HomeState extends State<HomeWidget> {
   }
 
   String getLatestDataOrDefault(String sensorId) {
-    if (!sensorDataMap.containsKey(sensorId) ||
-        sensorDataMap[sensorId].isEmpty) {
+    if (!sensorDataMap.containsKey(sensorId) || sensorDataMap[sensorId].isEmpty) {
       return "";
     } else {
       var sensorData = sensorDataMap[sensorId].last;
@@ -123,52 +122,11 @@ class _HomeState extends State<HomeWidget> {
 
   Column Sensors() {
     return Column(
-        children: sensors
-            .map((device) => Padding(
-                  padding: EdgeInsets.only(top: 20.0, left: 60.0, right: 60.0),
-                  child: Container(
-                    decoration: new BoxDecoration(
-                        color: getColorByState(device.state),
-                        borderRadius:
-                            new BorderRadius.all(Radius.circular(25.0))),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Spacer(),
-                            Text(device.type,
-                                style: TextStyle(fontSize: 20.0)),
-                            Spacer(),
-                            Text(device.state,
-                                style: TextStyle(fontSize: 10.0)),
-                            Spacer(),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Spacer(),
-                            Text(getLatestDataOrDefault(device.id)),
-                            Spacer(),
-                            Spacer(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ))
-            .toList());
-  }
-
-  final stateColorMap = {
-    "CONNECTED": Colors.blue.withAlpha(100),
-    "DISCONNECTED": Colors.red.withAlpha(100),
-    "CONNECTING": Colors.blue.withAlpha(30),
-    "DISCONNECTING": Colors.orange.withAlpha(70),
-  };
-
-  Color getColorByState(String state) {
-    return stateColorMap[state] ?? Colors.red.withAlpha(70);
+        children: sensors.map((sensor) =>
+            SensorWidget(
+              sensor: sensor,
+              sensorField: getLatestDataOrDefault(sensor.id),
+            )
+        ).toList());
   }
 }

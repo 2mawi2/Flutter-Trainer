@@ -5,6 +5,7 @@ import com.mawistudios.trainer.trainer.data.observer.TrainingSessionObservable
 import com.mawistudios.trainer.trainer.model.DataPointType
 import com.mawistudios.trainer.trainer.model.SensorData
 import com.wahoofitness.connector.capabilities.Capability
+import com.wahoofitness.connector.capabilities.CrankRevs
 import com.wahoofitness.connector.capabilities.Heartrate
 import com.wahoofitness.connector.conn.connections.SensorConnection
 import java.util.*
@@ -33,4 +34,25 @@ class HearthRateSensorStrategy(
         })
     }
 }
+
+class CrankRevsSensorStrategy() : ICapabilityStrategy {
+
+    override fun handleData(connection: SensorConnection) {
+        log("new crank revs capability")
+        val revs = connection.getCurrentCapability(Capability.CapabilityType.CrankRevs) as CrankRevs
+
+        revs.addListener { data ->
+            log(data.toString())
+            val sensorData = SensorData(
+                    sensorId = connection.id,
+                    dataPoint = data.crankRevs.toDouble(),
+                    time = Date(data.timeMs),
+                    dataPointType = DataPointType.CRANKREVS_CADENCE
+            )
+            TrainingSessionObservable.onNewSensorData(sensorData)
+        }
+    }
+}
+
+
 

@@ -5,6 +5,7 @@ import com.mawistudios.trainer.trainer.data.observer.TrainingSessionObservable
 import com.mawistudios.trainer.trainer.model.Sensor
 import com.wahoofitness.connector.HardwareConnectorEnums.SensorConnectionError
 import com.wahoofitness.connector.HardwareConnectorEnums.SensorConnectionState
+import com.wahoofitness.connector.capabilities.Capability
 import com.wahoofitness.connector.capabilities.Capability.CapabilityType
 import com.wahoofitness.connector.conn.connections.SensorConnection
 
@@ -59,9 +60,9 @@ class SensorManager : ISensorManager {
         log("detected sensor: ${type.name}")
         when (type) {
             CapabilityType.Heartrate -> HearthRateSensorStrategy()
+            CapabilityType.CrankRevs -> CrankRevsSensorStrategy()
             else -> UnknownSensorStrategy()
             // CapabilityType.WheelRevs -> WheelRevsSensorStrategy(sensorDataRepo)
-            // CapabilityType.CrankRevs -> CrankRevsSensorStrategy(sensorDataRepo)
             // CapabilityType.BikePower -> BikePowerStrategy(sensorDataRepo)
         }.handleData(connection)
     }

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'SensorParameters.dart';
+
 class Sensor {
   final String id;
   final String state;
   final String name;
-  final String params;
+  final SensorParameters params;
   final String type;
 
   Sensor({this.id, this.state, this.name, this.params, this.type});
@@ -12,13 +16,13 @@ class Sensor {
         state = json['state'],
         name = json['name'],
         type = json['type'],
-        params = json['params'];
+        params = SensorParameters.fromJson(jsonDecode(json['params']));
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'state': state,
         'name': name,
-        'params': params,
+        'params': params.toJson(),
         'type': type,
       };
 }
