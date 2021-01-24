@@ -27,6 +27,7 @@ class _HomeState extends State<HomeWidget> {
 
   Future _onClickDiscoverButton() async {
     if (!isDiscoveryStarted) {
+      isDiscoveryStarted = true;
       sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
         updateOrAddSensor(sensors, sensor);
         setState(() {});
@@ -81,6 +82,18 @@ class _HomeState extends State<HomeWidget> {
             Spacer(),
             HomeButtons(),
             Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                buttonFlatDefault(
+                  Key("btn_discover"),
+                  "Discover",
+                  _onClickDiscoverButton,
+                ),
+                SizedBox(width: 20),
+                discoverProgressIndicator()
+              ],
+            ),
             Sensors(),
             Spacer(),
           ],
@@ -89,14 +102,23 @@ class _HomeState extends State<HomeWidget> {
     );
   }
 
+  Widget discoverProgressIndicator() {
+    print("isDiscoveryStarted $isDiscoveryStarted");
+    return Visibility(
+      visible: isDiscoveryStarted,
+      child: SizedBox(
+        child: new CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+        ),
+        height: 25,
+        width: 25,
+      ),
+    );
+  }
+
   Column HomeButtons() {
     return Column(
       children: <Widget>[
-        buttonFlatDefault(
-          Key("btn_discover"),
-          "Discover",
-          _onClickDiscoverButton,
-        ),
         buttonFlatDefault(
           Key("btn_select"),
           "Select Training Plan",
@@ -122,11 +144,11 @@ class _HomeState extends State<HomeWidget> {
 
   Column Sensors() {
     return Column(
-        children: sensors.map((sensor) =>
-            SensorWidget(
-              sensor: sensor,
-              sensorField: getLatestDataOrDefault(sensor.id),
-            )
-        ).toList());
+        children: sensors
+            .map((sensor) => SensorWidget(
+                  sensor: sensor,
+                  sensorField: getLatestDataOrDefault(sensor.id),
+                ))
+            .toList());
   }
 }
