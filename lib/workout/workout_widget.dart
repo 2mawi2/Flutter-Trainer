@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trainer/common/model/SensorData.dart';
-import 'package:trainer/data/native/SensorChannel.dart';
+import 'package:trainer/common/data/native/SensorChannel.dart';
 import 'package:trainer/workout/charts/GaugeChart.dart';
 import 'package:trainer/workout/charts/SparkBar.dart';
 

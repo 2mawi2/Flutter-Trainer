@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trainer/data/local/preferences_repo.dart';
+import 'package:trainer/common/data/local/preferences_repo.dart';
 import 'package:trainer/home/home_widget.dart';
 import 'package:trainer/zone/zone_widget.dart';
 
@@ -14,17 +14,19 @@ class NavigationWidget extends StatefulWidget {
 class _NavigationWidgetState extends State<NavigationWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  List<Widget> _widgetOptions = <Widget>[
-    HomeWidget(),
+  List<Widget> pages = <Widget>[
+    HomeWidget(
+      key: PageStorageKey("Home"),
+    ),
     Text(
       'Training History',
       style: optionStyle,
+      key: PageStorageKey("History"),
     ),
-    //Text(
-    //  'Training History 2',
-    //  style: optionStyle,
-    //),
-    ZoneWidget(preferencesRepo: PreferencesRepo()),
+    ZoneWidget(
+        key: PageStorageKey("Zones"),
+        preferencesRepo: PreferencesRepo()
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -33,14 +35,17 @@ class _NavigationWidgetState extends State<NavigationWidget> {
     });
   }
 
+  final PageStorageBucket pageStorageBucket = PageStorageBucket();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trainer'),
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: PageStorage(
+        child: pages[_selectedIndex],
+        bucket: pageStorageBucket,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

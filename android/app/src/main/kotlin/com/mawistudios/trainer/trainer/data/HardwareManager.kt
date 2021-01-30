@@ -79,7 +79,7 @@ class HardwareManager constructor(
     }
 
     private fun startDiscovering() {
-        connector.startDiscovery(discoveryListener, NetworkType.BTLE)
+        connector.startDiscovery(discoveryListener)
         TrainingSessionObservable.onDiscoveryStarted()
     }
 

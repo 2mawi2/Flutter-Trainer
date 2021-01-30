@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trainer/data/local/preferences_repo.dart';
+import 'package:trainer/common/data/local/preferences_repo.dart';
 import 'package:trainer/zone/zone_helper.dart';
 
 class ZoneWidget extends StatefulWidget {

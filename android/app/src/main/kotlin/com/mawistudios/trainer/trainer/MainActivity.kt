@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.PersistableBundle
 import androidx.core.content.ContextCompat
-import com.dsi.ant.plugins.utility.log.LogAnt
 import com.google.gson.Gson
 import com.mawistudios.trainer.trainer.app.log
 import com.mawistudios.trainer.trainer.app.toast

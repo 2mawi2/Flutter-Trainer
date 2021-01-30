@@ -4,13 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trainer/common/model/Sensor.dart';
 import 'package:trainer/common/model/SensorData.dart';
-import 'package:trainer/data/local/preferences_repo.dart';
-import 'package:trainer/data/native/SensorChannel.dart';
+import 'package:trainer/common/data/local/preferences_repo.dart';
+import 'package:trainer/common/data/native/SensorChannel.dart';
 import 'package:trainer/home/sensor_widget.dart';
 import 'package:trainer/workout/workout_widget.dart';
 import 'package:trainer/zone/zone_widget.dart';
 
 import '../common/styles.dart';
+import '../container.dart';
 
 class HomeWidget extends StatefulWidget {
   HomeWidget({Key key}) : super(key: key) {}
@@ -20,22 +21,33 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeWidget> {
+  var sensorChannel = getIt<SensorChannel>();
+
   var sensors = <Sensor>[];
-  var isDiscoveryStarted = false;
-  var sensorChannel = SensorChannel();
   var sensorDataMap = HashMap<String, List<SensorData>>();
+  var isDiscoveryStarted = false;
+
+  @override
+  void initState() {
+    sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
+      updateOrAddSensor(sensors, sensor);
+      setState(() {});
+    };
+    sensorChannel.onNewSensorDataHandler = (SensorData sensorData) {
+      updateSensorData(sensorData);
+      setState(() {});
+    };
+  }
+
+  @override
+  void dispose() {
+    sensorChannel.onNewSensorDataHandler = null;
+    sensorChannel.onSensorConnectionStateChangedHandler = null;
+  }
 
   Future _onClickDiscoverButton() async {
     if (!isDiscoveryStarted) {
       isDiscoveryStarted = true;
-      sensorChannel.onSensorConnectionStateChangedHandler = (Sensor sensor) {
-        updateOrAddSensor(sensors, sensor);
-        setState(() {});
-      };
-      sensorChannel.onNewSensorDataHandler = (SensorData sensorData) {
-        updateSensorData(sensorData);
-        setState(() {});
-      };
       await sensorChannel.startService();
     }
   }
