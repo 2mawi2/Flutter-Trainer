@@ -23,6 +23,7 @@ class HomeWidget extends StatefulWidget {
 class _HomeState extends State<HomeWidget> {
   var sensorChannel = getIt<SensorChannel>();
 
+  var persistedSensors = <Sensor>[];
   var sensors = <Sensor>[];
   var sensorDataMap = HashMap<String, List<SensorData>>();
   var isDiscoveryStarted = false;
@@ -78,24 +79,25 @@ class _HomeState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Spacer(),
           HomeButtons(),
           Spacer(),
+          Text("Linked Sensors:", style: TextStyle(color: Colors.grey)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               buttonFlatDefault(
                 Key("btn_discover"),
-                "Discover",
+                "Edit Sensors",
                 _onClickDiscoverButton,
               ),
               SizedBox(width: 20),
               discoverProgressIndicator()
             ],
           ),
-          Sensors(),
+          Sensors(persistedSensors, true),
+          Sensors(sensors, false),
           Spacer(),
         ],
       ),
@@ -137,13 +139,42 @@ class _HomeState extends State<HomeWidget> {
     }
   }
 
-  Column Sensors() {
+  Column Sensors(List<Sensor> sensors, bool isSavedByUser) {
     return Column(
         children: sensors
-            .map((sensor) => SensorWidget(
-                  sensor: sensor,
-                  sensorField: getLatestDataOrDefault(sensor.id),
-                ))
+            .map(
+              (sensor) => SensorWidget(
+                sensor: sensor,
+                sensorField: getLatestDataOrDefault(sensor.id),
+                onClickSensorButton: onClickSensorButton,
+                isSavedByUser: isSavedByUser,
+              ),
+            )
             .toList());
   }
+
+
+
+  void onClickSensorButton(String sensorId, bool toBeRemoved) {
+    if (toBeRemoved) {
+      moveSensor(persistedSensors, sensors, sensorId);
+    } else {
+      moveSensor(sensors, persistedSensors, sensorId);
+    }
+    sortSensors();
+    setState(() {});
+  }
+
+  void moveSensor(List<Sensor> from, List<Sensor> to, String sensorId) {
+    var sensorToBeRemoved = from.firstWhere((element) => element.id == sensorId);
+    from.removeWhere((element) => element.id == sensorId);
+    to.add(sensorToBeRemoved);
+  }
+
+  void sortSensors() {
+    persistedSensors.sort((l, r) => l.name.compareTo(r.name));
+    sensors.sort((l, r) => l.name.compareTo(r.name));
+  }
 }
+
+typedef SensorButtonCallback = void Function(String sensorId, bool toBeRemoved);

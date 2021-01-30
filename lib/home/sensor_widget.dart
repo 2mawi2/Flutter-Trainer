@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:trainer/common/model/Sensor.dart';
 
+import 'home_widget.dart';
+
 class SensorWidget extends StatelessWidget {
   Sensor sensor;
   String sensorField = "";
+  SensorButtonCallback onClickSensorButton;
+  bool isSavedByUser;
 
-  SensorWidget({this.sensor, this.sensorField});
+  SensorWidget({this.sensor, this.sensorField, this.onClickSensorButton, this.isSavedByUser});
 
   Icon getIconBySensor() {
     if (sensor.params.sensorType == "HEARTRATE") {
@@ -58,6 +62,16 @@ class SensorWidget extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+            Center(
+              child: IconButton(
+                icon: this.isSavedByUser ? Icon(Icons.remove_circle) : Icon(Icons.add_box),
+                color: Colors.black.withAlpha(150),
+                iconSize: 32,
+                onPressed: () {
+                  onClickSensorButton(sensor.id, this.isSavedByUser);
+                },
+              ),
             ),
           ],
         ),
